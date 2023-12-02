@@ -16,8 +16,8 @@
 
 <Metadata challenge={data.challenge} />
 
-<div class="space-y-2">
-	<h1>{data.challenge.name}</h1>
+<div class="space-y-2 mt-2">
+	<h1 class="font-christmas">{data.challenge.name}</h1>
 	<p>
 		<span class="text-[rgb(255,0,0)] font-bold">You</span>
 		are Santa, and you are hungry. Eat the

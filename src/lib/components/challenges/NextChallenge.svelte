@@ -28,4 +28,4 @@
 	const zeroPad = (num: number) => String(num).padStart(2, '0');
 </script>
 
-<span>{zeroPad(hours)}:{zeroPad(minutes)}:{zeroPad(seconds)}</span>
+<span>{zeroPad(hours)} hours, {zeroPad(minutes)} mins, {zeroPad(seconds)} seconds</span>

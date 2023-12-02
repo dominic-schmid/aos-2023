@@ -9,6 +9,6 @@ export const challenges: Challenge[] = [
 	{
 		day: 2,
 		name: 'Hungry Santa',
-		rating: 0.8
+		rating: 0.95
 	}
 ] as const;

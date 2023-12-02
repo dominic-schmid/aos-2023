@@ -19,7 +19,7 @@
 			<Card.Root role="button" class="hover:bg-muted transition duration-300 ease-in-out">
 				<Card.Header>
 					<Card.Title class="flex items-start justify-between gap-x-8">
-						<span>{name}</span>
+						<span class="font-christmas">{name}</span>
 						<span class="text-sm text-muted-foreground">~ {rating * 100}%</span>
 					</Card.Title>
 					<Card.Description>
@@ -36,7 +36,9 @@
 	<!-- Shows the next challenge -->
 	<Card.Root class="border-dashed" aria-disabled="true">
 		<Card.Header class="">
-			<Card.Title class="text-muted-foreground" tag="h5">Next challenge comes out in</Card.Title>
+			<Card.Title class="text-muted-foreground font-christmas" tag="h5">
+				Next challenge in
+			</Card.Title>
 		</Card.Header>
 		<Card.Content class="text-xl md:text2xl font-bold">
 			<NextChallenge countdown={secondsUntilMidnight} on:completed={() => alert('done')} />

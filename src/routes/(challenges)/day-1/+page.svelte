@@ -7,7 +7,6 @@
 	import { useChildStore } from '$lib/stores/day-1';
 	import AddChild from './(components)/add-child.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { challenges } from '$lib/challenges';
 	import Metadata from '$lib/components/challenges/Metadata.svelte';
 	import { toast } from 'svelte-sonner';
 
@@ -36,8 +35,8 @@
 
 <Metadata challenge={data.challenge} />
 
-<div class="flex items-center justify-between gap-x-8 mb-8">
-	<h1>{data.challenge.name}</h1>
+<div class="flex items-center justify-between gap-x-8 mb-8 mt-2">
+	<h1 class="font-christmas">{data.challenge.name}</h1>
 	<Button variant="link" on:click={resetAll}>Reset all</Button>
 </div>
 
