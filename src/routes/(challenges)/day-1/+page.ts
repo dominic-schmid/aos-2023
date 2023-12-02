@@ -1,4 +1,4 @@
-import { challenges } from '$lib/constants';
+import { challenges } from '$lib/challenges';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 

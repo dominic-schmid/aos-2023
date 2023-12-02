@@ -1,9 +1,8 @@
 <script lang="ts">
-	import Button from '$lib/components/ui/button/button.svelte';
 	import { cookies } from '$lib/stores/day-2';
-	import { GameState, type Pos, type Snake } from '$lib/types/day-2';
-	import { Pause, Play } from 'radix-icons-svelte';
+	import { GameState, type Board, type Pos, type Snake } from '$lib/types/day-2';
 	import { onMount } from 'svelte';
+	import CookieImg from '$lib/assets/day-2/cookie.png';
 
 	let canvas: HTMLCanvasElement | undefined = undefined;
 	let ctx: CanvasRenderingContext2D;
@@ -11,9 +10,9 @@
 	let innerHeight: number;
 
 	const speed = 15 as const; // Refresh rate per second
-	let gameState = GameState.Playing;
+	export let gameState: GameState;
 
-	let board = { w: 400, h: 400 };
+	export let board: Board = { w: 400, h: 400 };
 	$: board = {
 		w: innerWidth * 0.7 - ((innerWidth * 0.7) % tileSize),
 		h: innerHeight * 0.6 - ((innerHeight * 0.6) % tileSize)
@@ -36,9 +35,9 @@
 	};
 
 	// TODO theoretically this could break because the cookie could spawn on the snake sometimes
-	let cookie: Pos = { x: ranPos('x'), y: ranPos('y') };
+	export let cookie: Pos = { x: ranPos('x'), y: ranPos('y') };
 
-	$cookies = snake.tail.length; // Bind cookies store to snake length
+	$: $cookies = snake.tail.length; // Bind cookies store to snake length
 
 	onMount(() => {
 		if (!canvas) return;
@@ -174,6 +173,8 @@
 		gameState = GameState.Stopped;
 	}
 
+	export let shouldRestart = false;
+
 	function restart() {
 		gameState = GameState.Playing;
 		snake = {
@@ -184,34 +185,12 @@
 		cookie = { x: ranPos('x'), y: ranPos('y') };
 	}
 
-	const pause = () => (gameState = GameState.Paused);
-	const unpause = () => (gameState = GameState.Playing);
+	$: shouldRestart && restart(); // hacky way to pass event from parent to child lol
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
 
-<div class="flex items-center justify-between gap-x-8">
-	<h1>Cookie count: {$cookies}</h1>
-	<h3 class="text-destructive" class:hidden={gameState !== GameState.Stopped}>Santa died!</h3>
-	<div>
-		{#if gameState === GameState.Paused}
-			<Button size="icon" on:click={unpause}>
-				<Play />
-			</Button>
-		{:else if gameState === GameState.Playing}
-			<Button size="icon" on:click={pause}>
-				<Pause />
-			</Button>
-		{:else if gameState === GameState.Stopped}
-			<Button variant="outline" on:click={restart} disabled={gameState !== GameState.Stopped}>
-				Restart game
-			</Button>
-		{/if}
-	</div>
-</div>
-<p class="text-muted-foreground mb-8"><b>Space</b>: pause | <b>R</b>: restart</p>
-
-<div class="w-full max-w-6xl flex justify-center">
+<div class="w-full flex justify-center">
 	<canvas
 		bind:this={canvas}
 		id="canvas"

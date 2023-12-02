@@ -7,7 +7,7 @@
 	import { useChildStore } from '$lib/stores/day-1';
 	import AddChild from './(components)/add-child.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { challenges } from '$lib/constants';
+	import { challenges } from '$lib/challenges';
 	import Metadata from '$lib/components/challenges/Metadata.svelte';
 	import { toast } from 'svelte-sonner';
 

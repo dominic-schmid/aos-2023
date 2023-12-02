@@ -9,6 +9,6 @@ export const challenges: Challenge[] = [
 	{
 		day: 2,
 		name: 'Cookie counter',
-		rating: 0
+		rating: 0.8
 	}
 ] as const;

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
-	import { challenges } from '$lib/constants';
+	import { challenges } from '$lib/challenges';
 	import { Progress } from '$lib/components/ui/progress';
 	import { Button } from '$lib/components/ui/button';
 	import NextChallenge from '$lib/components/challenges/NextChallenge.svelte';
