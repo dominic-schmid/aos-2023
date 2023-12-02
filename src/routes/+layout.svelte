@@ -6,7 +6,7 @@
 	import Container from '$lib/components/Container.svelte';
 </script>
 
-<Toaster />
+<Toaster richColors />
 <ModeWatcher />
 
 <div>
