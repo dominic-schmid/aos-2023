@@ -83,6 +83,7 @@
 		scrollbar-color: hsl(215.4 16.3% 46.9% / 0.3);
 	}
 	body {
+		cursor: url('pie.svg'), auto;
 		@apply bg-background text-foreground;
 		font-feature-settings:
 			'rlig' 1,
@@ -120,6 +121,10 @@
 	/* Selecting text */
 	::selection {
 		@apply bg-primary/80;
+	}
+
+	.sleigh-cursor {
+		cursor: url('santa-sleigh.webp');
 	}
 }
 

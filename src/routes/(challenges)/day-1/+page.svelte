@@ -36,8 +36,8 @@
 
 <Metadata challenge={data.challenge} />
 
-<div class="flex items-center justify-between gap-x-8">
-	<h1 class="my-12">{challenges[0].name}</h1>
+<div class="flex items-center justify-between gap-x-8 mb-8">
+	<h1>{data.challenge.name}</h1>
 	<Button variant="link" on:click={resetAll}>Reset all</Button>
 </div>
 
