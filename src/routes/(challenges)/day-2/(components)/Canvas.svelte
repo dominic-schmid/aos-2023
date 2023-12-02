@@ -1,29 +1,33 @@
 <script lang="ts">
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { cookies } from '$lib/stores/day-2';
-	import type { Pos, Snake } from '$lib/types/day-2';
+	import { GameState, type Pos, type Snake } from '$lib/types/day-2';
+	import { Pause, Play } from 'radix-icons-svelte';
 	import { onMount } from 'svelte';
 
 	let canvas: HTMLCanvasElement | undefined = undefined;
 	let ctx: CanvasRenderingContext2D;
+	let innerWidth: number;
+	let innerHeight: number;
 
-	enum GameState {
-		Paused, // Game has started but not yet playing
-		Playing,
-		Stopped
-	}
+	const speed = 15 as const; // Refresh rate per second
+	let gameState = GameState.Playing;
 
-	export let gameState = GameState.Paused;
-
-	const board = { w: 624, h: 400 } as const;
+	let board = { w: 400, h: 400 };
+	$: board = {
+		w: innerWidth * 0.7 - ((innerWidth * 0.7) % tileSize),
+		h: innerHeight * 0.6 - ((innerHeight * 0.6) % tileSize)
+	};
 
 	const tileSize = 16 as const;
-	const tileCount: Pos = {
+	let tileCount: Pos = { x: 25, y: 25 };
+	$: tileCount = {
 		x: board.w / tileSize,
 		y: board.h / tileSize
 	};
 
-	const speed = 15 as const; // Refresh rate per second
+	// Generate a random position on the board
+	const ranPos = (type: 'x' | 'y') => Math.floor(Math.random() * tileCount[type]);
 
 	let snake: Snake = {
 		head: { x: 0, y: 0 },
@@ -31,26 +35,32 @@
 		speed: { x: 0, y: 0 }
 	};
 
-	let cookie: Pos = { x: 0, y: 0 };
+	// TODO theoretically this could break because the cookie could spawn on the snake sometimes
+	let cookie: Pos = { x: ranPos('x'), y: ranPos('y') };
 
-	// Bind cookies store to snake length
-	$cookies = snake.tail.length;
+	$cookies = snake.tail.length; // Bind cookies store to snake length
 
 	onMount(() => {
-		if (canvas) {
-			const context = canvas.getContext('2d');
-			if (!context) return;
-			ctx = context;
-			document.body.addEventListener('keydown', keyDown);
+		if (!canvas) return;
 
-			restart();
-			draw();
-		}
+		const context = canvas.getContext('2d');
+		if (!context) return;
+		ctx = context;
+		document.body.addEventListener('keydown', keyDown);
+		// Prevent scrolling with arrow keys and space
+		window.addEventListener(
+			'keydown',
+			(e) =>
+				['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code) &&
+				e.preventDefault()
+		);
+
+		draw();
 	});
 
 	function clearBoard() {
 		if (!canvas) return;
-		ctx.fillStyle = 'red';
+		ctx.fillStyle = 'black';
 		ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 	}
 
@@ -79,13 +89,13 @@
 			snake.tail = [{ x: snake.head.x, y: snake.head.y }, ...snake.tail.slice(0, -1)];
 		}
 
-		ctx.fillStyle = 'orange';
+		ctx.fillStyle = 'red';
 		ctx.fillRect(snake.head.x * tileSize, snake.head.y * tileSize, tileSize, tileSize);
 	}
 
 	function drawCookie() {
 		if (!canvas) return;
-		ctx.fillStyle = 'blue';
+		ctx.fillStyle = 'orange';
 		ctx.fillRect(cookie.x * tileSize, cookie.y * tileSize, tileSize, tileSize);
 	}
 
@@ -153,9 +163,10 @@
 				gameState = GameState.Playing;
 			} else if (gameState === GameState.Playing) {
 				gameState = GameState.Paused;
-			} else {
-				restart();
 			}
+		}
+		if (e.key == 'r') {
+			restart();
 		}
 	}
 
@@ -164,7 +175,7 @@
 	}
 
 	function restart() {
-		gameState = GameState.Paused;
+		gameState = GameState.Playing;
 		snake = {
 			head: { x: ranPos('x'), y: ranPos('y') },
 			tail: [],
@@ -173,24 +184,39 @@
 		cookie = { x: ranPos('x'), y: ranPos('y') };
 	}
 
-	// Generate a random position on the board
-	const ranPos = (type: 'x' | 'y') => Math.floor(Math.random() * tileCount[type]);
+	const pause = () => (gameState = GameState.Paused);
+	const unpause = () => (gameState = GameState.Playing);
 </script>
 
-<div class="flex justify-evenly gap-x-8">
-	<canvas bind:this={canvas} id="canvas" width={board.w} height={board.h} />
-	<div class="space-y-4">
-		{#if gameState === GameState.Stopped}
-			<h3 class="text-destructive">Santa died!</h3>
+<svelte:window bind:innerWidth bind:innerHeight />
+
+<div class="flex items-center justify-between gap-x-8">
+	<h1>Cookie count: {$cookies}</h1>
+	<h3 class="text-destructive" class:hidden={gameState !== GameState.Stopped}>Santa died!</h3>
+	<div>
+		{#if gameState === GameState.Paused}
+			<Button size="icon" on:click={unpause}>
+				<Play />
+			</Button>
+		{:else if gameState === GameState.Playing}
+			<Button size="icon" on:click={pause}>
+				<Pause />
+			</Button>
+		{:else if gameState === GameState.Stopped}
+			<Button variant="outline" on:click={restart} disabled={gameState !== GameState.Stopped}>
+				Restart game
+			</Button>
 		{/if}
-
-		<Button variant="secondary" on:click={restart} disabled={gameState !== GameState.Stopped}>
-			Restart
-		</Button>
-
-		<ul>
-			<li>Board: {board.w} * {board.h} pixels</li>
-			<li>Snake length: {snake.tail.length}</li>
-		</ul>
 	</div>
+</div>
+<p class="text-muted-foreground mb-8"><b>Space</b>: pause | <b>R</b>: restart</p>
+
+<div class="w-full max-w-6xl flex justify-center">
+	<canvas
+		bind:this={canvas}
+		id="canvas"
+		width={board.w}
+		height={board.h}
+		class="border rounded-md"
+	/>
 </div>

@@ -4,3 +4,9 @@ export type Snake = {
 	tail: Pos[];
 	speed: Pos;
 };
+
+export enum GameState {
+	Paused, // Game has started but not yet playing
+	Playing,
+	Stopped
+}
