@@ -1,6 +1,6 @@
 {
-	"name": "Advent of Svelte 2023",
-	"version": "0.0.1",
+	"name": "advent-of-svelte-2023",
+	"version": "1.0.0",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
