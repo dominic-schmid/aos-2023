@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { cookieGameStore } from '$lib/stores/day-2';
-	import { fly } from 'svelte/transition';
 	import CookieImg from '$lib/assets/day-2/cookie.png';
+	import { cookieGameStore } from '$lib/stores/day-2';
 	import { quintOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 
 	const game = cookieGameStore();
 	$: ({ cookie, snake } = $game);

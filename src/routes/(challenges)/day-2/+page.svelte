@@ -1,21 +1,17 @@
 <script lang="ts">
-	import { slide } from 'svelte/transition';
+	import SadSanta from '$lib/assets/day-2/sad-santa.avif';
 	import Metadata from '$lib/components/challenges/Metadata.svelte';
-	import type { PageData } from './$types';
-	import Canvas2 from './(components)/Canvas2.svelte';
 	import { cookieGameStore } from '$lib/stores/day-2';
 	import { GameState } from '$lib/types/day-2';
 	import { cn } from '$lib/utils';
-	import SadSanta from '$lib/assets/day-2/sad-santa.avif';
+	import { slide } from 'svelte/transition';
+	import type { PageData } from './$types';
+	import Canvas from './(components)/Canvas.svelte';
 	import Stash from './(components)/Stash.svelte';
 
 	const game = cookieGameStore();
 	$: ({ state } = $game);
 	export let data: PageData;
-
-	// const pause = () => ($game.state = GameState.Paused);
-	// const unpause = () => ($game.state = GameState.Playing);
-	// const restart = () => game.restart();
 </script>
 
 <Metadata challenge={data.challenge} />
@@ -27,21 +23,6 @@
 		are Santa, and you are hungry. Eat the
 		<span class="text-[rgb(255,150,0)] font-bold">cookies</span>, but don't eat yourself!
 	</p>
-	<!-- <div>
-		{#if $game.state === GameState.Paused}
-			<Button size="icon" on:click={unpause}>
-				<Play />
-			</Button>
-		{:else if $game.state === GameState.Playing}
-			<Button size="icon" on:click={pause}>
-				<Pause />
-			</Button>
-		{:else if $game.state === GameState.Stopped}
-			<Button variant="outline" on:click={restart} disabled={$game.state !== GameState.Stopped}>
-				Restart game
-			</Button>
-		{/if}
-	</div> -->
 </div>
 
 <Stash />
@@ -65,5 +46,5 @@
 		// `h-[calc(${tileSize * tileCount.y}-${(tileSize * tileCount.y) % tileSize}px]`
 	)}
 >
-	<Canvas2 />
+	<Canvas />
 </div>
