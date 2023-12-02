@@ -93,6 +93,7 @@
 					<Table.Cell class="font-medium p-4">{name}</Table.Cell>
 					<Table.Cell class="p-4">{type}</Table.Cell>
 					<Table.Cell class="p-4 float-right">{tally}</Table.Cell>
+
 					<Table.Cell class="p-4 w-[150px] border-l ">
 						<div class="flex justify-evenly items-center gap-x-4">
 							<Button variant="outline" size="icon" on:click={() => decTally(name)}>

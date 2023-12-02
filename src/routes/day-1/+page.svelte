@@ -9,6 +9,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { challenges } from '$lib/constants';
 	import Metadata from '$lib/components/challenges/Metadata.svelte';
+	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;
 	const children = useChildStore(data.children);
@@ -16,6 +17,7 @@
 	function resetAll() {
 		children.set(data.children);
 		filterValue = '';
+		toast.success('All children have been reset to their original state!');
 	}
 
 	let filterValue = '';

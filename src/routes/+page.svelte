@@ -3,6 +3,9 @@
 	import { challenges } from '$lib/constants';
 	import { Progress } from '$lib/components/ui/progress';
 	import { Button } from '$lib/components/ui/button';
+	import NextChallenge from '$lib/components/challenges/NextChallenge.svelte';
+
+	const secondsUntilMidnight = (new Date().setHours(24, 0, 0, 0) - Date.now()) / 1000;
 </script>
 
 <svelte:head>
@@ -11,7 +14,7 @@
 </svelte:head>
 
 <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-12">
-	{#each challenges as { day, name, rating }}
+	{#each challenges as { day, name, rating } (day)}
 		<a href="/day-{day}">
 			<Card.Root role="button" class="hover:bg-muted transition duration-300 ease-in-out">
 				<Card.Header>
@@ -29,6 +32,16 @@
 			</Card.Root>
 		</a>
 	{/each}
+
+	<!-- Shows the next challenge -->
+	<Card.Root class="border-dashed" aria-disabled="true">
+		<Card.Header class="">
+			<Card.Title class="text-muted-foreground" tag="h5">Next challenge comes out in</Card.Title>
+		</Card.Header>
+		<Card.Content class="text-xl md:text2xl font-bold">
+			<NextChallenge countdown={secondsUntilMidnight} on:completed={() => alert('done')} />
+		</Card.Content>
+	</Card.Root>
 </div>
 
 <hr class="my-8 max-w-3xl mx-auto" />

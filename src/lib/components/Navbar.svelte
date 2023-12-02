@@ -11,9 +11,16 @@
 >
 	<Container>
 		<div class="flex items-center justify-between gap-x-4">
-			<a href="/" class="flex items-center gap-x-2 p-1">
+			<a href="/" class="flex items-center gap-x-2 p-1 group">
 				<img src={SvelteSanta} alt="Svelte Santa logo" class="w-10 h-10 object-contain" />
-				<h3>Advent of Svelte 2023</h3>
+				<h3 class="relative">
+					<span
+						class="group-hover:opacity-100 opacity-0 absolute top-0 left-0 text-sm text-muted-foreground font-normal group-hover:-translate-y-[calc(50%+4px)] transition duration-75 ease-in"
+					>
+						Dominics
+					</span>
+					Advent of Svelte 2023
+				</h3>
 			</a>
 			<div class="flex items-center justify-evenly gap-x-4">
 				<Button
