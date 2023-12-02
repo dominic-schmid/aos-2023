@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { GithubLogo } from 'radix-icons-svelte';
 	import Container from './Container.svelte';
-	import SvelteSanta from '$lib/assets/santa-svelte.png';
+	import SvelteSanta from '$lib/assets/day-1/santa-svelte.png';
 </script>
 
 <nav

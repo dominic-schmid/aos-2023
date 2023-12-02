@@ -2,11 +2,9 @@ import { challenges } from '$lib/constants';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-export const load = (async ({ data }) => {
-	const children = data.children;
-	const challenge = challenges.find((c) => c.day === 1);
+export const load = (async () => {
+	const challenge = challenges.find((c) => c.day === 2);
 
 	if (!challenge) throw error(404, 'Challenge not found');
-
-	return { children, challenge };
+	return { challenge };
 }) satisfies PageLoad;

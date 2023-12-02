@@ -34,7 +34,7 @@
 	$: naughtiest = $children.sort((a, b) => a.tally - b.tally)[0];
 </script>
 
-<Metadata challenge={challenges[0]} />
+<Metadata challenge={data.challenge} />
 
 <div class="flex items-center justify-between gap-x-8">
 	<h1 class="my-12">{challenges[0].name}</h1>

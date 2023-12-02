@@ -9,7 +9,7 @@
 </script>
 
 <svelte:head>
-	<title>Advent of Svelte 2023</title>
+	<title>My advent of Svelte 2023</title>
 	<meta name="author" content="Dominic Schmid" />
 </svelte:head>
 
@@ -48,7 +48,7 @@
 
 <div class="max-w-3xl mx-auto">
 	<p class="text-center text-muted-foreground">
-		Advent of Svelte 2023 is a collection of 25 challenges to help you learn Svelte.
+		Advent of Svelte 2023 is a collection of 24 challenges to help you learn Svelte.
 		<br />
 		Each challenge is designed to teach you a new concept in Svelte.
 	</p>
