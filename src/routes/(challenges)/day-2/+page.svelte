@@ -38,7 +38,14 @@
 	</div>
 {/if}
 
-<p class="text-muted-foreground my-1 text-right"><b>Space</b> to pause, <b>R</b> to restart</p>
+<p class="text-muted-foreground my-1 text-right">
+	{#if $game.state === GameState.Paused}
+		<b>Space</b> / <b>arrows</b> to unpause,
+	{:else if $game.state === GameState.Playing}
+		<b>Space</b> to pause,
+	{/if}
+	<b>R</b> to restart
+</p>
 <div
 	class={cn(
 		'w-full border rounded-md overflow-hidden',
@@ -48,3 +55,6 @@
 >
 	<Canvas />
 </div>
+<p class="text-muted-foreground my-1 text-right">
+	<b>←</b> <b>↑</b> <b>→</b> <b>↓</b> to move
+</p>
