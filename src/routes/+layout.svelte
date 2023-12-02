@@ -4,6 +4,7 @@
 	import { ModeWatcher } from 'mode-watcher';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import Container from '$lib/components/Container.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 </script>
 
 <Toaster richColors />
@@ -17,4 +18,6 @@
 			<slot />
 		</main>
 	</Container>
+
+	<Footer />
 </div>

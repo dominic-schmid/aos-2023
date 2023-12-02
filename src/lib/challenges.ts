@@ -8,7 +8,7 @@ export const challenges: Challenge[] = [
 	},
 	{
 		day: 2,
-		name: 'Cookie counter',
+		name: 'Hungry Santa',
 		rating: 0.8
 	}
 ] as const;

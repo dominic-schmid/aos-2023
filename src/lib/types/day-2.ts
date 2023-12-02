@@ -11,3 +11,12 @@ export enum GameState {
 	Playing,
 	Stopped
 }
+
+export type CookieGame = {
+	tileSize: number;
+	tileCount: Pos;
+	speed: number;
+	snake: Snake;
+	cookie: Pos;
+	state: GameState;
+};

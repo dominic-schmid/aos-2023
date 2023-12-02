@@ -4,8 +4,12 @@
 	import { onMount } from 'svelte';
 	import CookieImg from '$lib/assets/day-2/cookie.png';
 
-	let canvas: HTMLCanvasElement | undefined = undefined;
+	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D;
+
+	let observer: ResizeObserver;
+	$: canvas && observer && observer.observe(canvas);
+
 	let innerWidth: number;
 	let innerHeight: number;
 
@@ -13,10 +17,10 @@
 	export let gameState: GameState;
 
 	export let board: Board = { w: 400, h: 400 };
-	$: board = {
-		w: innerWidth * 0.7 - ((innerWidth * 0.7) % tileSize),
-		h: innerHeight * 0.6 - ((innerHeight * 0.6) % tileSize)
-	};
+	// $: board = {
+	// 	w: innerWidth * 0.7 - ((innerWidth * 0.7) % tileSize),
+	// 	h: innerHeight * 0.6 - ((innerHeight * 0.6) % tileSize)
+	// };
 
 	const tileSize = 16 as const;
 	let tileCount: Pos = { x: 25, y: 25 };
@@ -40,19 +44,15 @@
 	$: $cookies = snake.tail.length; // Bind cookies store to snake length
 
 	onMount(() => {
-		if (!canvas) return;
-
-		const context = canvas.getContext('2d');
-		if (!context) return;
+		const context = canvas.getContext('2d')!;
 		ctx = context;
-		document.body.addEventListener('keydown', keyDown);
-		// Prevent scrolling with arrow keys and space
-		window.addEventListener(
-			'keydown',
-			(e) =>
-				['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code) &&
-				e.preventDefault()
-		);
+
+		const resize = (canvas: HTMLCanvasElement) => {
+			canvas.width = canvas.clientWidth;
+			canvas.height = canvas.clientHeight;
+		};
+
+		observer = new ResizeObserver(() => canvas && resize(canvas));
 
 		draw();
 	});
@@ -129,11 +129,12 @@
 	}
 
 	function keyDown(e: KeyboardEvent) {
-		// If any arrow key pressed, start the game
+		// If any arrow key pressed, start the game Prevent moving the page scroller
 		if (
-			['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(e.code) &&
+			['Space', 'ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(e.code) &&
 			gameState === GameState.Paused
 		) {
+			e.preventDefault();
 			gameState = GameState.Playing;
 		}
 
@@ -188,14 +189,8 @@
 	$: shouldRestart && restart(); // hacky way to pass event from parent to child lol
 </script>
 
-<svelte:window bind:innerWidth bind:innerHeight />
+<svelte:window bind:innerWidth bind:innerHeight on:keydown={keyDown} />
 
 <div class="w-full flex justify-center">
-	<canvas
-		bind:this={canvas}
-		id="canvas"
-		width={board.w}
-		height={board.h}
-		class="border rounded-md"
-	/>
+	<canvas bind:this={canvas} id="canvas" class="border rounded-md w-full h-full" />
 </div>
