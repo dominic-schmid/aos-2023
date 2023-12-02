@@ -7,6 +7,8 @@
 	import { useChildStore } from '$lib/stores/day-1';
 	import AddChild from './(components)/add-child.svelte';
 	import { Button } from '$lib/components/ui/button';
+	import { challenges } from '$lib/constants';
+	import Metadata from '$lib/components/challenges/Metadata.svelte';
 
 	export let data: PageData;
 	const children = useChildStore(data.children);
@@ -30,10 +32,13 @@
 	$: naughtiest = $children.sort((a, b) => a.tally - b.tally)[0];
 </script>
 
+<Metadata challenge={challenges[0]} />
+
 <div class="flex items-center justify-between gap-x-8">
-	<h1 class="my-12">Day 1</h1>
+	<h1 class="my-12">{challenges[0].name}</h1>
 	<Button variant="link" on:click={resetAll}>Reset all</Button>
 </div>
+
 <section class="grid grid-cols-2 md:grid-cols-3 gap-8">
 	<Card>
 		<span slot="title">Total children</span>
