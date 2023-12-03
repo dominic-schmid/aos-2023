@@ -6,6 +6,6 @@
 
 <Metadata challenge={data.challenge} />
 
-<div class="pt-2">
+<div class="pt-4">
 	<slot />
 </div>

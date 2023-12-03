@@ -5,8 +5,8 @@
 	import { Button } from '$lib/components/ui/button';
 	import { fly } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
-	import { Cross1, Trash } from 'radix-icons-svelte';
-	import { cn } from '$lib/utils';
+	import { Cross1, EyeClosed, EyeOpen, Trash } from 'radix-icons-svelte';
+	import { cn, flyAndScale } from '$lib/utils';
 	import Gift from './Gift.svelte';
 
 	type Events = {
@@ -26,7 +26,6 @@
 
 	const select = () => dispatch('select');
 	const autoFill = () => dispatch('autoFill');
-	const clear = () => dispatch('clear');
 	const remove = () => {
 		if (confirm('Are you sure you want to delete this trip? This cannot be undone!'))
 			dispatch('remove');
@@ -46,15 +45,22 @@
 			<Card.Title class="flex items-center justify-between space-x-2">
 				Trip #{index}
 				<div class="flex items-center justify-evenly space-x-2.5">
-					<Button on:click={autoFill}>Auto fill</Button>
 					<Tooltip.Root>
 						<Tooltip.Trigger asChild let:builder>
-							<Button builders={[builder]} variant="outline" size="icon" on:click={clear}>
-								<Cross1 class="w-4 h-4" />
+							<Button builders={[builder]} variant="ghost" size="icon" on:click={toggleGifts}>
+								{#if showGifts}
+									<EyeOpen class="w-4 h-4" />
+								{:else}
+									<EyeClosed class="w-4 h-4" />
+								{/if}
 							</Button>
 						</Tooltip.Trigger>
-						<Tooltip.Content>Clear trip without deleting</Tooltip.Content>
+						<Tooltip.Content>
+							{#if showGifts}Hide{:else}Show{/if}
+							the individual gifts
+						</Tooltip.Content>
 					</Tooltip.Root>
+					<Button on:click={autoFill}>Auto fill</Button>
 					<Tooltip.Root>
 						<Tooltip.Trigger asChild let:builder>
 							<Button builders={[builder]} variant="destructive" size="icon" on:click={remove}>
@@ -65,16 +71,14 @@
 					</Tooltip.Root>
 				</div>
 			</Card.Title>
-			<!-- <Card.Description>Total weight: {trip.totalWeight}kg</Card.Description> -->
 		</Card.Header>
 		<Card.Content>
-			<Button variant="link" on:click={toggleGifts} class="w-full flex justify-center"
-				>Toggle gifts</Button
-			>
 			{#if showGifts}
-				{#each trip.gifts as gift, i (i)}
-					<Gift {gift} />
-				{/each}
+				<ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2" transition:flyAndScale>
+					{#each trip.gifts as gift, i (i)}
+						<Gift {gift} />
+					{/each}
+				</ul>
 			{/if}
 		</Card.Content>
 		<Card.Footer>

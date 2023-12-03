@@ -4,7 +4,7 @@
 	export let gift: Day3APIResult;
 </script>
 
-<div>
+<li class="flex items-center justify-between space-x-4">
 	<span>{gift.name}</span>
-	<span>{gift.weight.toFixed(2)} kg</span>
-</div>
+	<small class="text-muted-foreground">{gift.weight.toFixed(2)} kg</small>
+</li>

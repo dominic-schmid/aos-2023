@@ -10,13 +10,12 @@ export function greedy(gifts: Day3APIResult[]): Day3APIResult[] {
 
 // Iterates over the list one time and for every gift it adds it to the first trip that has enough space.
 // Since the trips are sorted by weight descending, the first trip will have all the heaviest gifts.
-export function autoSortAll(gifts: Day3APIResult[], alreadySorted = false): Trip[] {
+export function autoFillAll(gifts: Day3APIResult[], limit: number, alreadySorted = false): Trip[] {
 	const sorted = alreadySorted ? gifts : greedy(gifts);
 	const trips: Trip[] = [];
 
-	for (let i = 0; i < sorted.length; i++) {
-		const gift = sorted[i];
-		let trip = trips.find((t) => t.totalWeight + gift.weight <= 10);
+	for (const gift of sorted) {
+		let trip = trips.find((t) => t.totalWeight + gift.weight <= limit);
 		if (!trip) {
 			trip = { gifts: [], totalWeight: 0 };
 			trips.push(trip);
@@ -28,16 +27,16 @@ export function autoSortAll(gifts: Day3APIResult[], alreadySorted = false): Trip
 	return trips;
 }
 
-export function autoSortOne(remainingGifts: Day3APIResult[], alreadySorted = false): Trip {
-	const sorted = alreadySorted ? remainingGifts : greedy(remainingGifts);
+export function autoFillSled(gifts: Day3APIResult[], limit: number, alreadySorted = false): Trip {
+	const sorted = alreadySorted ? gifts : greedy(gifts);
 	const trip: Trip = { gifts: [], totalWeight: 0 };
 
 	for (const gift of sorted) {
-		if (trip.totalWeight + gift.weight <= 100) {
+		if (trip.totalWeight + gift.weight <= limit) {
 			trip.gifts.push(gift);
 			trip.totalWeight += gift.weight;
 		}
-		if (trip.totalWeight === 100) break;
+		if (trip.totalWeight >= limit) break;
 	}
 
 	return trip;
