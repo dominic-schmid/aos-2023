@@ -27,9 +27,13 @@ export function autoFillAll(gifts: Day3APIResult[], limit: number, alreadySorted
 	return trips;
 }
 
-export function autoFillSled(gifts: Day3APIResult[], limit: number, alreadySorted = false): Trip {
-	const sorted = alreadySorted ? gifts : greedy(gifts);
-	const trip: Trip = { gifts: [], totalWeight: 0 };
+export function autoFillTrip(
+	trip: Trip,
+	remainingGifts: Day3APIResult[],
+	limit: number,
+	alreadySorted = false
+): Trip {
+	const sorted = alreadySorted ? remainingGifts : greedy(remainingGifts);
 
 	for (const gift of sorted) {
 		if (trip.totalWeight + gift.weight <= limit) {

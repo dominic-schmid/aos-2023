@@ -1,13 +1,14 @@
 <script lang="ts">
-	import type { Trip } from '$lib/types/day-3';
+	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import * as Tooltip from '$lib/components/ui/tooltip';
-	import { Button } from '$lib/components/ui/button';
-	import { fly } from 'svelte/transition';
-	import { createEventDispatcher } from 'svelte';
-	import { Cross1, EyeClosed, EyeOpen, Trash } from 'radix-icons-svelte';
+	import type { Trip } from '$lib/types/day-3';
 	import { cn, flyAndScale } from '$lib/utils';
-	import Gift from './Gift.svelte';
+	import { EyeClosed, EyeOpen, Trash } from 'radix-icons-svelte';
+	import { createEventDispatcher } from 'svelte';
+	import { fly } from 'svelte/transition';
+	import TripGift from './TripGift.svelte';
+	import { askConfirmations } from '$lib/stores/day-3';
 
 	type Events = {
 		select: null;
@@ -20,6 +21,7 @@
 	export let trip: Trip;
 	export let index: number;
 	export let active: boolean;
+	export let canAutofill: boolean;
 
 	let showGifts = false;
 	const toggleGifts = () => (showGifts = !showGifts);
@@ -27,12 +29,16 @@
 	const select = () => dispatch('select');
 	const autoFill = () => dispatch('autoFill');
 	const remove = () => {
-		if (confirm('Are you sure you want to delete this trip? This cannot be undone!'))
-			dispatch('remove');
+		if (
+			$askConfirmations &&
+			!confirm('Are you sure you want to delete this trip? This cannot be undone!')
+		)
+			return;
+		dispatch('remove');
 	};
 </script>
 
-<div transition:fly>
+<div transition:flyAndScale>
 	<Card.Root
 		role="button"
 		class={cn(
@@ -43,8 +49,7 @@
 	>
 		<Card.Header>
 			<Card.Title class="flex items-center justify-between space-x-2">
-				Trip #{index}
-				<div class="flex items-center justify-evenly space-x-2.5">
+				<div class="flex items-center space-x-2">
 					<Tooltip.Root>
 						<Tooltip.Trigger asChild let:builder>
 							<Button builders={[builder]} variant="ghost" size="icon" on:click={toggleGifts}>
@@ -60,7 +65,11 @@
 							the individual gifts
 						</Tooltip.Content>
 					</Tooltip.Root>
-					<Button on:click={autoFill}>Auto fill</Button>
+					<span>Trip #{index}</span>
+				</div>
+
+				<div class="flex items-center justify-evenly space-x-2.5">
+					<Button on:click={autoFill} disabled={!canAutofill}>Auto fill</Button>
 					<Tooltip.Root>
 						<Tooltip.Trigger asChild let:builder>
 							<Button builders={[builder]} variant="destructive" size="icon" on:click={remove}>
@@ -74,11 +83,12 @@
 		</Card.Header>
 		<Card.Content>
 			{#if showGifts}
-				<ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2" transition:flyAndScale>
+				<ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 mt-2" transition:flyAndScale>
 					{#each trip.gifts as gift, i (i)}
-						<Gift {gift} />
+						<TripGift {gift} />
 					{/each}
 				</ul>
+				<hr class="mt-6 mx-16" />
 			{/if}
 		</Card.Content>
 		<Card.Footer>

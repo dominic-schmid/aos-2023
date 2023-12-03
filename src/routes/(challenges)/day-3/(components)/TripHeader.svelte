@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { Plus, Trash } from 'radix-icons-svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	type Events = {
 		autobalance: null;
