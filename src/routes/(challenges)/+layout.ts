@@ -7,7 +7,5 @@ export const load = (async ({ route }) => {
 	const challenge = challenges.find((c) => c.day === Number(id));
 	if (!challenge) throw error(404, `Challenge "${id}" not found!`);
 
-	console.log('challenge', challenge);
-
 	return { challenge };
 }) satisfies LayoutLoad;
