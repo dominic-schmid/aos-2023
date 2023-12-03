@@ -12,7 +12,7 @@
 	const dispatch = createEventDispatcher<Events>();
 
 	export let gifts: Day3APIResult[];
-	export let disabled = false;
+	// export let disabled = false;
 
 	function handleClick() {
 		// TODO allow selecting invididual gifts for individual lists
