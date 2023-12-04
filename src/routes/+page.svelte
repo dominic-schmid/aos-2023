@@ -2,10 +2,12 @@
 	import * as Card from '$lib/components/ui/card';
 	import { challenges } from '$lib/challenges';
 	import { Progress } from '$lib/components/ui/progress';
-	import { Button } from '$lib/components/ui/button';
 	import NextChallenge from '$lib/components/challenges/NextChallenge.svelte';
 
 	const secondsUntilMidnight = (new Date().setHours(24, 0, 0, 0) - Date.now()) / 1000;
+
+	const today = new Date().getDate() + 1;
+	const availableChallenges = challenges.filter((challenge) => challenge.day <= today);
 </script>
 
 <svelte:head>
@@ -14,13 +16,15 @@
 </svelte:head>
 
 <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-12">
-	{#each challenges as { day, name, rating } (day)}
-		<a href="/day-{day}">
-			<Card.Root role="button" class="hover:bg-muted transition duration-300 ease-in-out">
+	{#each availableChallenges as { day, name, rating } (day)}
+		<a href={rating > 0 ? `/day-${day}` : '#'}>
+			<Card.Root class={rating > 0 ? 'hover:bg-muted transition duration-300 ease-in-out' : ''}>
 				<Card.Header>
 					<Card.Title class="flex items-start justify-between gap-x-8">
 						<span class="font-christmas">{name}</span>
-						<span class="text-sm text-muted-foreground">~ {rating * 100}%</span>
+						<span class="text-sm text-muted-foreground">
+							{rating === 1 || rating === 0 ? ' ' : '~ '}{rating * 100}%
+						</span>
 					</Card.Title>
 					<Card.Description>
 						Day {day}
