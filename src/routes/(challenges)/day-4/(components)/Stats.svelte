@@ -2,20 +2,8 @@
 	import type { HeartRate } from '$lib/types/day-4';
 	import SimpleStatCard from '$lib/components/cards/SimpleStatCard.svelte';
 	import { CaretDown, CaretUp, Layers, ViewNone } from 'radix-icons-svelte';
-	import { cn } from '$lib/utils';
 
 	export let heartRates: HeartRate[];
-
-	// $: averageHeartRate = heartRates.reduce((acc, curr) => acc + curr.rate, 0) / heartRates.length;
-	// $: measurementTimespan = getMeasurementTimespan(heartRates);
-
-	// const getMeasurementTimespan = (rates: HeartRate[]) => {
-	// 	const sortedTimestamps = rates
-	// 		.map((hr) => hr.timestamp)
-	// 		.sort((a, b) => a.getTime() - b.getTime());
-	// 	if (sortedTimestamps.length < 2) return 0;
-	// 	return sortedTimestamps[sortedTimestamps.length - 1].getTime() - sortedTimestamps[0].getTime(); // milliseconds
-	// };
 
 	function formatMilliseconds(ms: number) {
 		let timeStr = '';
@@ -35,7 +23,7 @@
 		avg = min = max = timespanMs = firstTimestamp = lastTimestamp = 0;
 
 		if (!rates.length) return { avg, min, max, timespanMs };
-		avg = min = max = rates[0].rate;
+		min = max = rates[0].rate;
 		firstTimestamp = lastTimestamp = rates[0].timestamp.getTime();
 
 		for (const rate of rates) {
@@ -58,7 +46,12 @@
 		max: maxHeartRate,
 		timespanMs: measurementTimespan
 	} = getStats(heartRates));
-	$: heartRateColor = averageHeartRate < 50 ? 'text-red-500' : 'text-green-500';
+	$: heartRateColor =
+		averageHeartRate < 80 || averageHeartRate > 150
+			? 'text-red-500'
+			: averageHeartRate < 100 || averageHeartRate > 130
+			  ? 'text-orange-600'
+			  : 'text-green-500';
 </script>
 
 <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-6">

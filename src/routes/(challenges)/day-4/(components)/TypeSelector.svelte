@@ -2,18 +2,32 @@
 	import * as Select from '$lib/components/ui/select';
 	import type { ChartDataType } from '$lib/types/day-4';
 
-	export let type: ChartDataType = 'mock';
+	export let dataType: ChartDataType = 'mock';
 
-	const types: {
-		value: ChartDataType;
-		label: string;
-	}[] = [
+	const types: SelectType[] = [
 		{ value: 'mock', label: 'Mock data' },
 		{ value: 'API', label: 'Real API data' }
 	];
+
+	let selected: SelectType = types[0];
+
+	type SelectType = {
+		value: ChartDataType;
+		label: string;
+	};
+
+	function handleSelect(item: any) {
+		console.log(item);
+		try {
+			const newSelection = item as SelectType;
+			dataType = newSelection.value;
+		} catch (err) {
+			console.error('Could not hard cast item to ChartDataType in type selector');
+		}
+	}
 </script>
 
-<Select.Root>
+<Select.Root {selected} onSelectedChange={handleSelect}>
 	<Select.Trigger class="w-[220px]">
 		<Select.Value placeholder="Select chart data type" />
 	</Select.Trigger>

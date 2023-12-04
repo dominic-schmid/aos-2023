@@ -1,12 +1,10 @@
 <script lang="ts">
 	import type { HeartRate } from '$lib/types/day-4';
 	import { Line } from 'svelte-chartjs';
-
 	import {
 		Chart as ChartJS,
 		Title,
 		Tooltip,
-		Legend,
 		LineElement,
 		LinearScale,
 		PointElement,
@@ -14,18 +12,8 @@
 		Filler,
 		type ChartData
 	} from 'chart.js';
-	import { onMount } from 'svelte';
 
-	ChartJS.register(
-		Title,
-		Tooltip,
-		Legend,
-		Filler,
-		LineElement,
-		LinearScale,
-		PointElement,
-		CategoryScale
-	);
+	ChartJS.register(Title, Tooltip, Filler, LineElement, LinearScale, PointElement, CategoryScale);
 
 	export let heartRates: HeartRate[];
 
@@ -58,8 +46,6 @@
 			}
 		]
 	};
-
-	onMount(() => {});
 
 	$: if (data && chart && heartRates) {
 		chart.data.datasets[0].data = heartRates.map((result) => result.rate);

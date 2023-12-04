@@ -1,24 +1,24 @@
 <script lang="ts">
+	import { Button } from '$lib/components/ui/button';
 	import { DAY_4 } from '$lib/constants.js';
 	import type { ChartDataType, Day4APIResult, HeartRate } from '$lib/types/day-4.js';
+	import { Pause, Resume } from 'radix-icons-svelte';
 	import { onMount } from 'svelte';
 	import Chart from './(components)/Chart.svelte';
-	import { Button } from '$lib/components/ui/button';
-	import { Pause, Resume } from 'radix-icons-svelte';
 	import Stats from './(components)/Stats.svelte';
 	import TypeSelector from './(components)/TypeSelector.svelte';
+	import { toast } from 'svelte-sonner';
 
 	export let data;
 	let paused = false;
 
 	let heartRates: HeartRate[] = [];
 	let dataType: ChartDataType = 'mock';
-
-	// $: latestMeasurement = heartRates.length ? heartRates[heartRates.length - 1] : null;
+	$: dataType;
 
 	onMount(() => {
 		queryHeartRate();
-		const interval = setInterval(queryHeartRate, 6 * 1000);
+		const interval = setInterval(queryHeartRate, 2 * 1000);
 		return () => {
 			clearInterval(interval);
 		};
@@ -26,11 +26,8 @@
 
 	function queryHeartRate() {
 		if (paused) return;
-		if (dataType === 'mock') {
-			getMock();
-		} else if (dataType === 'API') {
-			getFromAPI();
-		}
+		if (dataType === 'mock') getMock();
+		else if (dataType === 'API') getFromAPI();
 	}
 
 	function getMock() {
@@ -38,28 +35,26 @@
 			...heartRates,
 			{
 				timestamp: new Date(),
-				rate: Math.floor(Math.random() * (120 - 50 + 1) + 50)
+				rate: Math.floor(Math.random() * (180 - 50 + 1) + 50)
 			}
 		];
 	}
 
-	function getFromAPI() {
-		fetch(DAY_4.apiRoute)
-			.then((res) => res.json())
-			.then((json) => {
-				try {
-					const hr = json as Day4APIResult;
-					heartRates = [
-						...heartRates,
-						{
-							timestamp: new Date(),
-							rate: hr.heartRate
-						}
-					];
-				} catch (e) {
-					console.log('Failed to parse', e);
+	async function getFromAPI() {
+		try {
+			const res = await fetch(DAY_4.apiRoute);
+			const hr = (await res.json()) as Day4APIResult;
+			heartRates = [
+				...heartRates,
+				{
+					timestamp: new Date(),
+					rate: hr.heartRate
 				}
-			});
+			];
+		} catch (e) {
+			toast.error('Failed to parse heart rate data!');
+			console.log('Failed to parse', e);
+		}
 	}
 </script>
 
@@ -71,7 +66,7 @@
 		himself. They want to track and react to any outliers!
 	</p>
 	<div class="flex items-center justify-evenly space-x-2 flex-nowrap">
-		<TypeSelector bind:type={dataType} />
+		<TypeSelector bind:dataType />
 		<Button
 			on:click={() => (paused = !paused)}
 			variant={paused ? 'default' : 'outline'}
