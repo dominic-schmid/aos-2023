@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SimpleStatCard from '$lib/components/cards/SimpleStatCard.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { useChildStore } from '$lib/stores/day-1';
@@ -6,7 +7,6 @@
 	import { toast } from 'svelte-sonner';
 	import type { PageData } from './$types';
 	import AddChild from './(components)/add-child.svelte';
-	import Card from './(components)/card.svelte';
 	import Table from './(components)/table.svelte';
 
 	export let data: PageData;
@@ -38,21 +38,21 @@
 </div>
 
 <section class="grid grid-cols-2 md:grid-cols-3 gap-8">
-	<Card>
+	<SimpleStatCard>
 		<span slot="title">Total children</span>
 		<FileText class="h-5 w-5 text-blue-500" slot="icon" />
 		<span>{$children.length}</span>
-	</Card>
-	<Card>
+	</SimpleStatCard>
+	<SimpleStatCard>
 		<span slot="title">Nicest child</span>
 		<CheckCircled class="h-5 w-5 text-green-500" slot="icon" />
 		<span>{nicest.name}</span>
-	</Card>
-	<Card>
+	</SimpleStatCard>
+	<SimpleStatCard>
 		<span slot="title">Naughtiest child</span>
 		<CrossCircled class="h-5 w-5 text-red-500" slot="icon" />
 		<span>{naughtiest.name}</span>
-	</Card>
+	</SimpleStatCard>
 </section>
 
 <section class="flex items-center py-4 gap-x-8 justify-between">

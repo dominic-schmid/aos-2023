@@ -6,3 +6,5 @@ export type HeartRate = {
 export type Day4APIResult = {
 	heartRate: number;
 };
+
+export type ChartDataType = 'mock' | 'API';
