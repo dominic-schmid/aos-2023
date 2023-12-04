@@ -3,7 +3,6 @@
 	import * as Table from '$lib/components/ui/table';
 	import { useChildStore } from '$lib/stores/day-1';
 	import type { Child } from '$lib/types/day-1';
-	import { cn } from '$lib/utils';
 	import { ArrowDown, ArrowUp, Minus, Plus, Trash } from 'radix-icons-svelte';
 	import { toast } from 'svelte-sonner';
 	import { fade } from 'svelte/transition';

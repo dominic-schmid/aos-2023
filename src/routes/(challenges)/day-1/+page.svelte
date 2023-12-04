@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { Input } from '$lib/components/ui/input';
-	import { CheckCircled, CrossCircled, FileText } from 'radix-icons-svelte';
-	import type { PageData } from './$types';
-	import Table from './(components)/table.svelte';
-	import Card from './(components)/card.svelte';
-	import { useChildStore } from '$lib/stores/day-1';
-	import AddChild from './(components)/add-child.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import Metadata from '$lib/components/challenges/Metadata.svelte';
+	import { Input } from '$lib/components/ui/input';
+	import { useChildStore } from '$lib/stores/day-1';
+	import { CheckCircled, CrossCircled, FileText } from 'radix-icons-svelte';
 	import { toast } from 'svelte-sonner';
+	import type { PageData } from './$types';
+	import AddChild from './(components)/add-child.svelte';
+	import Card from './(components)/card.svelte';
+	import Table from './(components)/table.svelte';
 
 	export let data: PageData;
 	const children = useChildStore(data.children);

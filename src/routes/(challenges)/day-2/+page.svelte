@@ -1,6 +1,5 @@
 <script lang="ts">
 	import SadSanta from '$lib/assets/day-2/sad-santa.avif';
-	import Metadata from '$lib/components/challenges/Metadata.svelte';
 	import { cookieGameStore } from '$lib/stores/day-2';
 	import { GameState } from '$lib/types/day-2';
 	import { cn } from '$lib/utils';
@@ -30,7 +29,6 @@
 		<h1 class="text-center my-4">
 			<span>Oh no!</span>
 			<span class="text-destructive">SANTA DIED</span>
-			<!-- <span>of starvation!</span> -->
 		</h1>
 		<img src={SadSanta} alt="Sad santa" class="max-h-36 mx-auto object-cover" />
 	</div>
