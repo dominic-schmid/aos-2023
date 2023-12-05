@@ -15,7 +15,7 @@
 	<meta name="author" content="Dominic Schmid" />
 </svelte:head>
 
-<div class="grid grid-cols-2 md:grid-cols-3 gap-4 mt-12">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
 	{#each availableChallenges as { day, name, rating } (day)}
 		<a href={rating > 0 ? `/day-${day}` : '#'}>
 			<Card.Root class={rating > 0 ? 'hover:bg-muted transition duration-300 ease-in-out' : ''}>

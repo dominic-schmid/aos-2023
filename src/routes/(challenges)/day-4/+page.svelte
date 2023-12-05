@@ -60,12 +60,12 @@
 
 <h1 class="font-christmas">{data.challenge.name}</h1>
 
-<div class="flex items-start justify-between gap-x-8">
+<div class="flex flex-col sm:flex-row items-start justify-between gap-x-8 mb-8">
 	<p class="text-muted-foreground mb-8 mt-2">
 		Santas heart rate is being monitored. The elves are worried that he might be overworking
 		himself. They want to track and react to any outliers!
 	</p>
-	<div class="flex items-center justify-evenly space-x-2 flex-nowrap">
+	<div class="flex items-center justify-evenly space-x-2 flex-nowrap w-full sm:w-min">
 		<TypeSelector bind:dataType />
 		<Button
 			on:click={() => (paused = !paused)}
