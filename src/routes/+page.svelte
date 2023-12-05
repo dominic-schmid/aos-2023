@@ -6,7 +6,7 @@
 
 	const secondsUntilMidnight = (new Date().setHours(24, 0, 0, 0) - Date.now()) / 1000;
 
-	const today = new Date().getDate() + 1;
+	const today = new Date().getDate();
 	const availableChallenges = challenges.filter((challenge) => challenge.day <= today);
 </script>
 
